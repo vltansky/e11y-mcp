@@ -1,7 +1,7 @@
 ---
 url: https://www.w3.org/WAI/ARIA/apg/patterns/accordion/
 title:  Accordion Pattern (Sections With Show/Hide Functionality) | APG | WAI | W3C
-scraped_at: 2025-07-20T13:21:11.638Z
+scraped_at: 2025-07-20T13:35:50.055Z
 description: Accessibility resources free online from the international standards organization: W3C Web Accessibility Initiative (WAI).
 ---[Skip to content](https://www.w3.org/WAI/ARIA/apg/patterns/accordion/#main)
 

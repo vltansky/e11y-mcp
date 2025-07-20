@@ -1,0 +1,3 @@
+# Web Accessibility Documentation Index
+
+see /docs folder

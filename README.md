@@ -5,8 +5,8 @@ A modern Node.js scraper that uses [Firecrawl](https://www.firecrawl.dev/) to co
 ## 🚀 Features
 
 ### Core Functionality
-- ✅ **Smart Deduplication**: Only scrapes URLs that haven't been processed before
-- ✅ **Progress Persistence**: Saves progress after each URL to resume from interruptions
+- ✅ **Smart Deduplication**: Only scrapes URLs that haven't been processed before (checks existing docs/)
+- ✅ **Git-based Progress**: Uses existing markdown files as source of truth (no separate tracking file)
 - ✅ **Rate Limiting**: Respectful 1-second delays between requests
 - ✅ **Rich Metadata**: Adds frontmatter with URL, title, timestamp, and description
 - ✅ **Safe Filenames**: Converts URLs to filesystem-compatible names
@@ -86,9 +86,8 @@ Add URLs to `db.json` as a JSON array:
 e11y-mcp/
 ├── db.json                     # URLs to scrape
 ├── scrape.js                   # Main scraping application
-├── scraped-urls.json          # Progress tracking
 ├── jsconfig.json              # IDE configuration
-└── docs/                      # Generated markdown files
+└── docs/                      # Generated markdown files (git tracked)
     ├── www_w3_org_WAI_ARIA_apg_patterns_accordion.md
     ├── www_w3_org_WAI_ARIA_apg_patterns_breadcrumb.md
     └── example_com_accessibility_guide.md
@@ -153,12 +152,6 @@ yarn status
 
 Example output:
 ```
-Scraped URLs:
-[
-  "https://www.w3.org/WAI/ARIA/apg/patterns/accordion/",
-  "https://www.w3.org/WAI/ARIA/apg/patterns/breadcrumb/"
-]
-
 Generated files:
 -rw-r--r-- 1 user staff  5368 Jan 20 16:21 www.w3.org_WAI_ARIA_apg_patterns_accordion.md
 -rw-r--r-- 1 user staff  1451 Jan 20 16:21 www.w3.org_WAI_ARIA_apg_patterns_breadcrumb.md
@@ -201,6 +194,50 @@ For detailed debugging, run with Node.js debug flags:
 ```bash
 NODE_DEBUG=fs yarn scrape
 ```
+
+## 🤖 AI Assistant Integration
+
+This repository is available through GitMCP for enhanced AI coding assistance:
+
+### Quick Access
+Use in any MCP-compatible AI assistant:
+```
+@https://gitmcp.io/vltansky/e11y-mcp
+```
+
+### What is GitMCP?
+[GitMCP](https://gitmcp.io/) creates a dedicated Model Context Protocol (MCP) server for any GitHub project, enabling AI assistants to understand your code in context.
+
+### Setup Instructions
+1. **For Cursor**: Update `~/.cursor/mcp.json`:
+   ```json
+   {
+     "mcpServers": {
+       "e11y-mcp Docs": {
+         "url": "https://gitmcp.io/vltansky/e11y-mcp"
+       }
+     }
+   }
+   ```
+
+2. **For Claude Desktop**: Update `claude_desktop_config.json`:
+   ```json
+   {
+     "mcpServers": {
+       "e11y-mcp Docs": {
+         "command": "npx",
+         "args": ["mcp-remote", "https://gitmcp.io/vltansky/e11y-mcp"]
+       }
+     }
+   }
+   ```
+
+3. **For other AI tools**: Visit [gitmcp.io/vltansky/e11y-mcp](https://gitmcp.io/vltansky/e11y-mcp) for detailed setup instructions.
+
+### Benefits
+- **Code Understanding**: AI gains deep context of the repository structure
+- **Instant Setup**: No complex configuration needed
+- **Enhanced Responses**: More accurate and relevant AI assistance
 
 ## 🤝 Contributing
 

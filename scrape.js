@@ -16,7 +16,6 @@ const CONFIG = {
   FIRECRAWL_API_KEY: process.env.FIRECRAWL_API_KEY,
   DB_FILE: join(__dirname, 'db.json'),
   DOCS_DIR: join(__dirname, 'docs'),
-  SCRAPED_URLS_FILE: join(__dirname, 'scraped-urls.json'),
   RATE_LIMIT_MS: 1000,
   MAX_FILENAME_LENGTH: 200,
 };
@@ -114,6 +113,39 @@ class FileManager {
     }
     return readdirSync(CONFIG.DOCS_DIR).filter(f => f.endsWith('.md'));
   }
+
+  static extractUrlFromMarkdownFile(filename) {
+    const filepath = join(CONFIG.DOCS_DIR, filename);
+    if (!existsSync(filepath)) {
+      return null;
+    }
+
+    try {
+      const content = readFileSync(filepath, 'utf8');
+      const frontmatterMatch = content.match(/^---\n(.*?)\n---/s);
+      if (frontmatterMatch) {
+        const urlMatch = frontmatterMatch[1].match(/^url:\s*(.+)$/m);
+        return urlMatch ? urlMatch[1].trim() : null;
+      }
+    } catch (error) {
+      console.warn(`⚠️  Error reading ${filename}:`, error.message);
+    }
+    return null;
+  }
+
+  static getScrapedUrlsFromDocs() {
+    const files = FileManager.getExistingMarkdownFiles();
+    const scrapedUrls = new Set();
+
+    files.forEach(filename => {
+      const url = FileManager.extractUrlFromMarkdownFile(filename);
+      if (url) {
+        scrapedUrls.add(url);
+      }
+    });
+
+    return scrapedUrls;
+  }
 }
 
 // Scraping service
@@ -124,7 +156,7 @@ class ScrapingService {
     }
 
     this.app = new FirecrawlApp({ apiKey });
-    this.scrapedUrls = new Set(FileManager.loadJsonFile(CONFIG.SCRAPED_URLS_FILE));
+    this.scrapedUrls = FileManager.getScrapedUrlsFromDocs();
   }
 
   async scrapeUrl(url) {
@@ -200,9 +232,7 @@ class ScrapingService {
     }
   }
 
-  saveProgress() {
-    FileManager.saveJsonFile(CONFIG.SCRAPED_URLS_FILE, Array.from(this.scrapedUrls));
-  }
+
 
   async processUrls(urls) {
     const validUrls = UrlArraySchema.parse(urls);
@@ -241,8 +271,7 @@ class ScrapingService {
         results.errors.push({ url, error: result.error });
       }
 
-      // Save progress after each URL
-      this.saveProgress();
+      // Note: Progress is automatically tracked via docs/ folder
 
       // Rate limiting
       if (i < urlsToProcess.length - 1) {
