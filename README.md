@@ -19,15 +19,18 @@ This repository contains 3 accessibility documentation files scraped from W3C WA
 - **File**: `www.w3.org_WAI_ARIA_apg_patterns_dialog-modal_examples_datepicker-dialog.md`
 - **Updated**: 2025-07-20
 
-## Usage
+### Install MCP
 
-These files provide comprehensive accessibility implementation guidance including:
-- ARIA roles, states, and properties
-- Keyboard interaction patterns
-- Focus management techniques
-- Screen reader compatibility
-- Implementation examples
-
+Add to your `mcp.json`:
+```json
+{
+  "mcpServers": {
+    "e11y": {
+      "url": "https://gitmcp.io/vltansky/e11y-mcp"
+    }
+  }
+}
+```
 ## How to Contribute
 
 To add new accessibility documentation:
@@ -54,6 +57,35 @@ To add new accessibility documentation:
    ```
 
 This will scrape the new URLs, generate markdown files, and update the documentation index.
+
+## MCP Integration
+
+This repository is designed to work with Model Context Protocol (MCP) tools for accessing documentation content programmatically.
+
+### Accessing Files via MCP
+
+Use the `fetch_generic_url_content` tool to fetch any file from this repository:
+
+```json
+{
+  "url": "https://github.com/vltansky/e11y-mcp/raw/refs/heads/master/{file_path}"
+}
+```
+
+**Examples:**
+- Documentation: `https://github.com/vltansky/e11y-mcp/raw/refs/heads/master/docs/www.w3.org_WAI_ARIA_apg_patterns_accordion.md`
+- Configuration: `https://github.com/vltansky/e11y-mcp/raw/refs/heads/master/db.json`
+- Scripts: `https://github.com/vltansky/e11y-mcp/raw/refs/heads/master/scrape.js`
+
+### MCP Tools Available
+
+When you configure this repository in your MCP setup (via GitMCP or similar), you'll have access to:
+
+- `fetch_e11y_mcp_documentation`: Get entire documentation overview
+- `search_e11y_mcp_documentation`: Search within documentation content
+- `search_e11y_mcp_code`: Find specific code patterns
+- `fetch_generic_url_content`: Access any repository file by URL
+
 
 ## Updates
 

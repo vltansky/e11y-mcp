@@ -233,6 +233,42 @@ These files provide comprehensive accessibility implementation guidance includin
 - Screen reader compatibility
 - Implementation examples
 
+## MCP Integration
+
+This repository integrates with Model Context Protocol (MCP) for programmatic access:
+
+### File Access via MCP
+Use \`fetch_generic_url_content\` with URLs in this format:
+\`\`\`
+https://github.com/vltansky/e11y-mcp/raw/refs/heads/master/{file_path}
+\`\`\`
+
+### Available MCP Tools
+When configured in MCP (user can choose any server name):
+- \`fetch_e11y_mcp_documentation\`: Complete documentation overview
+- \`search_e11y_mcp_documentation\`: Search documentation content
+- \`search_e11y_mcp_code\`: Code pattern searches
+- \`fetch_generic_url_content\`: Direct file access by URL
+
+### MCP Setup
+Add to mcp.json with any name you prefer:
+\`\`\`json
+{
+  "mcpServers": {
+    "accessibility-docs": {
+      "url": "https://gitmcp.io/vltansky/e11y-mcp"
+    }
+  }
+}
+\`\`\`
+
+### Example Usage
+\`\`\`json
+{
+  "url": "https://github.com/vltansky/e11y-mcp/raw/refs/heads/master/docs/www.w3.org_WAI_ARIA_apg_patterns_accordion.md"
+}
+\`\`\`
+
 ## Updates
 
 Documentation index generated on: ${lastUpdated}
