@@ -73,10 +73,8 @@ Use the `fetch_generic_url_content` tool to fetch any file from this repository:
 ```
 
 **Examples:**
+- llm: `https://github.com/vltansky/e11y-mcp/raw/refs/heads/master/docs/llm.txt`
 - Documentation: `https://github.com/vltansky/e11y-mcp/raw/refs/heads/master/docs/www.w3.org_WAI_ARIA_apg_patterns_accordion.md`
-- Configuration: `https://github.com/vltansky/e11y-mcp/raw/refs/heads/master/db.json`
-- Scripts: `https://github.com/vltansky/e11y-mcp/raw/refs/heads/master/scrape.js`
-
 ### MCP Tools Available
 
 When you configure this repository in your MCP setup (via GitMCP or similar), you'll have access to:
