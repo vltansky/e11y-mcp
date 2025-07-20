@@ -5,7 +5,7 @@
   "scripts": {
     "scrape": "node scrape.js",
     "build": "echo 'Building documentation...' && node scrape.js && echo 'Documentation built successfully!'",
-    "clean": "rm -rf docs/",
+    "clean": "rm -rf docs/ llms.txt",
     "dev": "node --watch scrape.js",
     "status": "echo 'Generated files:' && (test -d docs && ls -la docs/ || echo 'No docs directory') && echo '\nTotal files:' && (test -d docs && ls docs/*.md 2>/dev/null | wc -l || echo '0')",
     "validate": "echo 'Validating URLs in db.json...' && node -e \"console.log(JSON.parse(require('fs').readFileSync('db.json', 'utf8')).map((url, i) => \\`\\${i+1}. \\${url}\\`).join('\\\\n'))\""

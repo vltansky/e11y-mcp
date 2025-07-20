@@ -133,7 +133,7 @@ class FileManager {
     return null;
   }
 
-  static getScrapedUrlsFromDocs() {
+    static getScrapedUrlsFromDocs() {
     const files = FileManager.getExistingMarkdownFiles();
     const scrapedUrls = new Set();
 
@@ -145,6 +145,106 @@ class FileManager {
     });
 
     return scrapedUrls;
+  }
+
+  static generateLlmsTxt() {
+    const files = FileManager.getExistingMarkdownFiles();
+    if (files.length === 0) {
+      return;
+    }
+
+    const docs = files.map(filename => {
+      const filepath = join(CONFIG.DOCS_DIR, filename);
+      try {
+        const content = readFileSync(filepath, 'utf8');
+        const frontmatterMatch = content.match(/^---\n(.*?)\n---/s);
+
+        if (frontmatterMatch) {
+          const frontmatter = frontmatterMatch[1];
+          const urlMatch = frontmatter.match(/^url:\s*(.+)$/m);
+          const titleMatch = frontmatter.match(/^title:\s*(.+)$/m);
+          const dateMatch = frontmatter.match(/^scraped_at:\s*(.+)$/m);
+
+          return {
+            filename,
+            url: urlMatch ? urlMatch[1].trim() : '',
+            title: titleMatch ? titleMatch[1].trim() : filename.replace('.md', ''),
+            date: dateMatch ? dateMatch[1].trim() : '',
+          };
+        }
+      } catch (error) {
+        console.warn(`⚠️  Error reading ${filename} for llms.txt generation:`, error.message);
+      }
+
+      return {
+        filename,
+        url: '',
+        title: filename.replace('.md', ''),
+        date: '',
+      };
+    }).filter(doc => doc.url || doc.title);
+
+    const llmsContent = FileManager.createLlmsContent(docs);
+
+    try {
+      writeFileSync('llms.txt', llmsContent, 'utf8');
+      console.log('📝 Generated llms.txt index file');
+    } catch (error) {
+      console.error('❌ Error generating llms.txt:', error.message);
+    }
+  }
+
+    static createLlmsContent(docs) {
+    const totalDocs = docs.length;
+    const lastUpdated = new Date().toISOString().split('T')[0];
+    const githubBaseUrl = 'https://github.com/vltansky/e11y-mcp/blob/master/docs';
+
+    let content = `# Web Accessibility Documentation
+
+This repository contains ${totalDocs} accessibility documentation files scraped from W3C WAI-ARIA patterns and converted to markdown format.
+
+## Available Documentation
+
+`;
+
+    docs.forEach(doc => {
+      const displayTitle = doc.title.replace(/\s*\|\s*APG\s*\|\s*WAI\s*\|\s*W3C\s*$/, '');
+      content += `### [${displayTitle}](${githubBaseUrl}/${doc.filename})
+- **Source**: ${doc.url}
+- **File**: \`${doc.filename}\`
+${doc.date ? `- **Updated**: ${doc.date.split('T')[0]}` : ''}
+
+`;
+    });
+
+    content += `## Documentation Features
+
+- **Frontmatter Metadata**: Each file includes URL, title, and scrape timestamp
+- **Clean Markdown**: Converted from original HTML for easy reading
+- **Cross-references**: Links and navigation preserved where possible
+- **Offline Access**: All content available without internet connection
+
+## Usage
+
+These files provide comprehensive accessibility implementation guidance including:
+- ARIA roles, states, and properties
+- Keyboard interaction patterns
+- Focus management techniques
+- Screen reader compatibility
+- Implementation examples
+
+## Updates
+
+Documentation index generated on: ${lastUpdated}
+Total files: ${totalDocs}
+
+To update documentation:
+1. Add URLs to \`db.json\`
+2. Run \`yarn build\`
+3. New \`llms.txt\` will be generated automatically
+`;
+
+    return content;
   }
 }
 
@@ -335,6 +435,9 @@ async function main() {
 
     // Generate report
     ReportService.printSummary(results);
+
+    // Generate llms.txt index file
+    FileManager.generateLlmsTxt();
 
     process.exit(results.failed > 0 ? 1 : 0);
 

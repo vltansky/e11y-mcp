@@ -1,7 +1,7 @@
 ---
 url: https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/examples/datepicker-dialog/
 title:  Date Picker Dialog Example | APG | WAI | W3C
-scraped_at: 2025-07-20T13:35:47.076Z
+scraped_at: 2025-07-20T14:48:12.679Z
 description: Accessibility resources free online from the international standards organization: W3C Web Accessibility Initiative (WAI).
 ---[Skip to content](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/examples/datepicker-dialog/#main)
 

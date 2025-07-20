@@ -1,7 +1,7 @@
 ---
 url: https://www.w3.org/WAI/ARIA/apg/patterns/breadcrumb/
 title:  Breadcrumb Pattern | APG | WAI | W3C
-scraped_at: 2025-07-20T13:35:52.488Z
+scraped_at: 2025-07-20T14:48:17.528Z
 description: Accessibility resources free online from the international standards organization: W3C Web Accessibility Initiative (WAI).
 ---[Skip to content](https://www.w3.org/WAI/ARIA/apg/patterns/breadcrumb/#main)
 
