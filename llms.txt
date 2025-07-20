@@ -35,11 +35,6 @@ These files provide comprehensive accessibility implementation guidance includin
 - Screen reader compatibility
 - Implementation examples
 
-## Updates
-
-Documentation index generated on: 2025-07-20
-Total files: 3
-
 ## MCP Integration
 
 This repository integrates with Model Context Protocol (MCP) for programmatic access:
@@ -47,7 +42,7 @@ This repository integrates with Model Context Protocol (MCP) for programmatic ac
 ### File Access via MCP
 Use `fetch_generic_url_content` with URLs in this format:
 ```
-https://github.com/vltansky/e11y-mcp/raw/refs/heads/master/{file_path}
+https://github.com/vltansky/e11y-mcp/blob/master/{file_path}
 ```
 
 ### Available MCP Tools
@@ -72,11 +67,22 @@ Add to mcp.json with any name you prefer:
 ### Example Usage
 ```json
 {
-  "url": "https://github.com/vltansky/e11y-mcp/raw/refs/heads/master/docs/www.w3.org_WAI_ARIA_apg_patterns_accordion.md"
+  "url": "https://github.com/vltansky/e11y-mcp/blob/master/docs/www.w3.org_WAI_ARIA_apg_patterns_accordion.md"
 }
 ```
+
+## Updates
+
+Documentation index generated on: 2025-07-20
+Total files: 3
+
+## Generated Files
+
+- `llms.txt`: This documentation index for AI/human consumption
+- `index.json`: Programmatic title-to-path mapping
+- `docs/*.md`: Individual documentation files
 
 To update documentation:
 1. Add URLs to `db.json`
 2. Run `yarn build`
-3. New `llms.txt` will be generated automatically
+3. New files will be generated automatically

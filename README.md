@@ -56,7 +56,10 @@ To add new accessibility documentation:
    yarn build
    ```
 
-This will scrape the new URLs, generate markdown files, and update the documentation index.
+This will scrape the new URLs, generate markdown files, and update the documentation index. The build process creates:
+- Individual `.md` files in `docs/` directory
+- `llms.txt` - Human and AI-readable documentation index
+- `index.json` - Programmatic title-to-path mapping
 
 ## MCP Integration
 
@@ -68,13 +71,14 @@ Use the `fetch_generic_url_content` tool to fetch any file from this repository:
 
 ```json
 {
-  "url": "https://github.com/vltansky/e11y-mcp/raw/refs/heads/master/{file_path}"
+  "url": "https://github.com/vltansky/e11y-mcp/blob/master/{file_path}"
 }
 ```
 
 **Examples:**
-- llm: `https://github.com/vltansky/e11y-mcp/raw/refs/heads/master/docs/llm.txt`
-- Documentation: `https://github.com/vltansky/e11y-mcp/raw/refs/heads/master/docs/www.w3.org_WAI_ARIA_apg_patterns_accordion.md`
+- Index: `https://github.com/vltansky/e11y-mcp/blob/master/index.json`
+- LLM Guide: `https://github.com/vltansky/e11y-mcp/blob/master/llms.txt`
+- Documentation: `https://github.com/vltansky/e11y-mcp/blob/master/docs/www.w3.org_WAI_ARIA_apg_patterns_accordion.md`
 ### MCP Tools Available
 
 When you configure this repository in your MCP setup (via GitMCP or similar), you'll have access to:
@@ -84,6 +88,12 @@ When you configure this repository in your MCP setup (via GitMCP or similar), yo
 - `search_e11y_mcp_code`: Find specific code patterns
 - `fetch_generic_url_content`: Access any repository file by URL
 
+
+## Generated Files
+
+- **`llms.txt`**: Human and AI-readable documentation index
+- **`index.json`**: Programmatic title-to-path mapping for easy discovery
+- **`docs/*.md`**: Individual accessibility documentation files
 
 ## Updates
 

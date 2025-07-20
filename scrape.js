@@ -184,13 +184,35 @@ class FileManager {
       };
     }).filter(doc => doc.url || doc.title);
 
+    // Generate llms.txt
     const llmsContent = FileManager.createLlmsContent(docs);
-
     try {
       writeFileSync('llms.txt', llmsContent, 'utf8');
       console.log('📝 Generated llms.txt index file');
     } catch (error) {
       console.error('❌ Error generating llms.txt:', error.message);
+    }
+
+    // Generate index.json
+    FileManager.generateIndexJson(docs);
+  }
+
+  static generateIndexJson(docs) {
+    const index = {};
+
+    docs.forEach(doc => {
+      // Clean up title by removing site suffix
+      const cleanTitle = doc.title.replace(/\s*\|\s*APG\s*\|\s*WAI\s*\|\s*W3C\s*$/, '').trim();
+      const filePath = `docs/${doc.filename}`;
+
+      index[cleanTitle] = filePath;
+    });
+
+    try {
+      writeFileSync('docs/index.json', JSON.stringify(index, null, 2), 'utf8');
+      console.log('📋 Generated index.json mapping file');
+    } catch (error) {
+      console.error('❌ Error generating index.json:', error.message);
     }
   }
 
@@ -240,7 +262,7 @@ This repository integrates with Model Context Protocol (MCP) for programmatic ac
 ### File Access via MCP
 Use \`fetch_generic_url_content\` with URLs in this format:
 \`\`\`
-https://github.com/vltansky/e11y-mcp/raw/refs/heads/master/{file_path}
+https://github.com/vltansky/e11y-mcp/blob/master/{file_path}
 \`\`\`
 
 ### Available MCP Tools
@@ -265,7 +287,7 @@ Add to mcp.json with any name you prefer:
 ### Example Usage
 \`\`\`json
 {
-  "url": "https://github.com/vltansky/e11y-mcp/raw/refs/heads/master/docs/www.w3.org_WAI_ARIA_apg_patterns_accordion.md"
+  "url": "https://github.com/vltansky/e11y-mcp/blob/master/docs/www.w3.org_WAI_ARIA_apg_patterns_accordion.md"
 }
 \`\`\`
 
@@ -274,10 +296,16 @@ Add to mcp.json with any name you prefer:
 Documentation index generated on: ${lastUpdated}
 Total files: ${totalDocs}
 
+## Generated Files
+
+- \`llms.txt\`: This documentation index for AI/human consumption
+- \`index.json\`: Programmatic title-to-path mapping
+- \`docs/*.md\`: Individual documentation files
+
 To update documentation:
 1. Add URLs to \`db.json\`
 2. Run \`yarn build\`
-3. New \`llms.txt\` will be generated automatically
+3. New files will be generated automatically
 `;
 
     return content;
